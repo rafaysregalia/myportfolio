@@ -1,29 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { ArrowUpRight, Mail } from 'lucide-react';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-/** UTILS **/
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 /** HELPER: OBFUSCATED WHATSAPP HANDLER (OPTION A) **/
-// Splits digits dynamically so bots parsing static HTML cannot scrape the number
 const openWhatsAppChat = () => {
   const countryCode = "92";
   const mobileNumber = "3493017113";
   const message = encodeURIComponent("Hi Rafay, I am interested in working with you!");
   
-  // Direct location assign opens WhatsApp chat cleanly
   window.location.assign(`https://wa.me/${countryCode}${mobileNumber}?text=${message}`);
 };
 
 /** COMPONENTS **/
 
 // 1. Magnet Effect Component
-const Magnet = ({ children, padding = 150, strength = 3 }: { children: React.ReactNode, padding?: number, strength?: number }) => {
+const Magnet = ({ children, padding = 150, strength = 3 }: { children: React.ReactNode; padding?: number; strength?: number }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLDivElement>(null);
 
@@ -37,7 +28,6 @@ const Magnet = ({ children, padding = 150, strength = 3 }: { children: React.Rea
     const distanceY = clientY - centerY;
 
     if (Math.abs(distanceX) < padding && Math.abs(distanceY) < padding) {
-      // Clamped to 6px downwards so the chin is never cut off
       const clampedY = Math.min(distanceY / strength, 6);
       setPosition({ x: distanceX / strength, y: clampedY });
     } else {
@@ -65,7 +55,15 @@ const Magnet = ({ children, padding = 150, strength = 3 }: { children: React.Rea
 };
 
 // 2. FadeIn Wrapper
-const FadeIn = ({ children, delay = 0, y = 30, x = 0, duration = 0.7 }: any) => (
+interface FadeInProps {
+  children: React.ReactNode;
+  delay?: number;
+  y?: number;
+  x?: number;
+  duration?: number;
+}
+
+const FadeIn = ({ children, delay = 0, y = 30, x = 0, duration = 0.7 }: FadeInProps) => (
   <motion.div
     initial={{ opacity: 0, y, x }}
     whileInView={{ opacity: 1, y: 0, x: 0 }}
@@ -116,10 +114,8 @@ const Hero = () => (
     <Navbar />
     
     <div className="flex-1 flex flex-col items-center justify-center relative w-full overflow-hidden">
-     {/* 1. ULTRA-EXPANDED EDGE-TO-EDGE HEADLINE (Moved higher directly under navbar) */}
+      {/* 1. ULTRA-EXPANDED EDGE-TO-EDGE HEADLINE (Tucked directly beneath navbar, no glow) */}
       <div className="absolute -top-4 sm:-top-6 md:-top-8 lg:-top-10 w-full flex justify-center items-center z-0 select-none pointer-events-none px-2 sm:px-4">
-       
-
         <FadeIn delay={0.15} y={-10}>
           <h1 
             className="hero-heading font-black uppercase leading-none whitespace-nowrap text-center text-[10.5vw] sm:text-[11vw] md:text-[11.5vw] lg:text-[12vw] tracking-[0.06em] sm:tracking-[0.10em] md:tracking-[0.14em] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]"
@@ -218,7 +214,7 @@ const Marquee = () => {
 
 const About = () => {
   const text = "With more than five years of experience in design, i focus on branding, web design, and user experience, i truly enjoy working with businesses that aim to stand out and present their best image. Let's build something incredible together!";
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start 0.8", "end 0.2"] });
 
   return (
@@ -286,8 +282,14 @@ const Services = () => {
   );
 };
 
-// Project Card with isolated scroll-driven scale animation
-const ProjectCard = ({ project, index, total, progress }: { project: any, index: number, total: number, progress: any }) => {
+interface ProjectItem {
+  id: string;
+  name: string;
+  type: string;
+  imgs: string[];
+}
+
+const ProjectCard = ({ project, index, total, progress }: { project: ProjectItem; index: number; total: number; progress: MotionValue<number> }) => {
   const targetScale = 1 - ((total - 1 - index) * 0.04);
   const start = index / total;
   const scale = useTransform(progress, [start, 1], [1, targetScale]);
@@ -326,13 +328,13 @@ const ProjectCard = ({ project, index, total, progress }: { project: any, index:
 };
 
 const Projects = () => {
-  const projects = [
+  const projects: ProjectItem[] = [
     { id: "01", name: "Nextlevel Studio", type: "Client", imgs: ["https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85", "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055431_11d841fd-8b41-46a5-82e4-b04f2407a7d8.png&w=1280&q=85", "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055451_e317bf2d-28d4-48cc-86b0-6f72f25b6327.png&w=1280&q=85"] },
     { id: "02", name: "Aura Brand Identity", type: "Personal", imgs: ["https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85", "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055723_5ceda0b8-d9c2-4665-b2e3-83ba19ba76d1.png&w=1280&q=85", "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055753_adc5dcbd-a8e6-49c0-b43a-9b030d835cea.png&w=1280&q=85"] },
     { id: "03", name: "Solaris Digital", type: "Client", imgs: ["https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055759_963cfb0b-4bd1-4b0f-9d0a-09bd6cf95b2f.png&w=1280&q=85", "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_060108_438f781a-9846-4dcc-89ab-c4e6cb830f5b.png&w=1280&q=85", "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055818_9d062121-ad7e-46b9-999a-1a6a692ef1ee.png&w=1280&q=85"] },
   ];
 
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
 
   return (
@@ -390,7 +392,7 @@ export default function App() {
           <ContactButton />
 
           <div className="flex gap-6 sm:gap-8 mt-4">
-            {/* WhatsApp Icon (Option A Click Handler) */}
+            {/* WhatsApp Icon */}
             <button 
               onClick={openWhatsAppChat}
               className="p-4 rounded-full border border-[#D7E2EA]/20 hover:border-[#25D366] hover:text-[#25D366] transition-all hover:scale-110 flex items-center justify-center text-[#D7E2EA] cursor-pointer" 
