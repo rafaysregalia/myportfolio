@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rafay.vercel.app/sitemap.xml
