@@ -114,12 +114,12 @@ const Hero = () => (
     <Navbar />
     
     <div className="flex-1 flex flex-col items-center justify-center relative w-full overflow-hidden">
-      {/* 1. ULTRA-EXPANDED EDGE-TO-EDGE HEADLINE (Tucked directly beneath navbar, no glow) */}
-      <div className="absolute -top-4 sm:-top-6 md:-top-8 lg:-top-10 w-full flex justify-center items-center z-0 select-none pointer-events-none px-2 sm:px-4">
+      {/* 1. ULTRA-EXPANDED EDGE-TO-EDGE HEADLINE (Adjusted for mobile to stay completely below the navbar) */}
+      <div className="absolute top-3 sm:top-1 md:-top-6 lg:-top-8 w-full flex justify-center items-center z-0 select-none pointer-events-none px-2 sm:px-4">
         <FadeIn delay={0.15} y={-10}>
           <h1 
-            className="hero-heading font-black uppercase leading-none whitespace-nowrap text-center text-[10.5vw] sm:text-[11vw] md:text-[11.5vw] lg:text-[12vw] tracking-[0.06em] sm:tracking-[0.10em] md:tracking-[0.14em] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]"
-            style={{ textIndent: '0.1em' }}
+            className="hero-heading font-black uppercase leading-none whitespace-nowrap text-center text-[9vw] sm:text-[10.5vw] md:text-[11.5vw] lg:text-[12vw] tracking-[0.03em] sm:tracking-[0.08em] md:tracking-[0.14em] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]"
+            style={{ textIndent: '0.04em' }}
           >
             Hi, i&apos;m rafay
           </h1>
@@ -127,7 +127,7 @@ const Hero = () => (
       </div>
 
       {/* 2. 3D AVATAR (Layer z-10: anchored with bottom buffer, chin protected) */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10 w-[270px] sm:w-[340px] md:w-[420px] lg:w-[490px] bottom-4 sm:bottom-6 md:bottom-8 pointer-events-none">
+      <div className="absolute left-1/2 -translate-x-1/2 z-10 w-[240px] sm:w-[320px] md:w-[420px] lg:w-[490px] bottom-3 sm:bottom-5 md:bottom-8 pointer-events-none">
         <FadeIn delay={0.35} y={30}>
           <Magnet padding={200} strength={3.6}>
             <img 
@@ -141,9 +141,9 @@ const Hero = () => (
     </div>
 
     {/* Hero Footer */}
-    <div className="flex justify-between items-end px-6 md:px-12 pb-8 md:pb-12 w-full relative z-30 pointer-events-auto">
+    <div className="flex justify-between items-end px-5 sm:px-8 md:px-12 pb-6 sm:pb-8 md:pb-12 w-full relative z-30 pointer-events-auto gap-4">
       <FadeIn delay={0.35} y={20}>
-        <p className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[180px] sm:max-w-[240px] md:max-w-[300px]" style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.35rem)' }}>
+        <p className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[150px] sm:max-w-[220px] md:max-w-[300px]" style={{ fontSize: 'clamp(0.7rem, 1.3vw, 1.35rem)' }}>
           a 3d creator driven by crafting striking and unforgettable projects
         </p>
       </FadeIn>
